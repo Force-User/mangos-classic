@@ -16,7 +16,8 @@
 *.so.dbg
 *.bin
 *.gz
-
+/build
+/run
 #
 # Top-level generic files
 #
