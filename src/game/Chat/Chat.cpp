@@ -541,6 +541,7 @@ ChatCommand* ChatHandler::getCommandTable()
         { "threat",         SEC_ADMINISTRATOR,  false, &ChatHandler::HandleNpcThreatCommand,           "", nullptr },
         { "move",           SEC_GAMEMASTER,     false, &ChatHandler::HandleNpcMoveCommand,             "", nullptr },
         { "playemote",      SEC_ADMINISTRATOR,  false, &ChatHandler::HandleNpcPlayEmoteCommand,        "", nullptr },
+        { "setstandstate",  SEC_GAMEMASTER,     false, &ChatHandler::HandleNpcSetStandStateCommand,     "Syntax: .npc setstandstate [#state]\n\nSet stand state (0-8) for selected creature. 0=stand, 1=sit ground, 2-8=sit chair", nullptr                 },
         { "setmodel",       SEC_GAMEMASTER,     false, &ChatHandler::HandleNpcSetModelCommand,         "", nullptr },
         { "setmovetype",    SEC_GAMEMASTER,     false, &ChatHandler::HandleNpcSetMoveTypeCommand,      "", nullptr },
         { "spawndist",      SEC_GAMEMASTER,     false, &ChatHandler::HandleNpcSpawnDistCommand,        "", nullptr },
@@ -2033,7 +2034,7 @@ bool ChatHandler::CheckEscapeSequences(const char* message)
                                 return false;
                             }
 
-                            for (uint8 i = 0; i < MAX_LOCALE; ++i)
+                            for (uint8 i = 0; i < MAX_DBC_LOCALE; ++i)
                             {
                                 uint32 skillLineNameLength = strlen(skillLine->name[i]);
                                 if (skillLineNameLength > 0 && strncmp(skillLine->name[i], buffer, skillLineNameLength) == 0)
@@ -2046,7 +2047,7 @@ bool ChatHandler::CheckEscapeSequences(const char* message)
                             }
                         }
                         bool foundName = false;
-                        for (uint8 i = 0; i < MAX_LOCALE; ++i)
+                        for (uint8 i = 0; i < MAX_DBC_LOCALE; ++i)
                         {
                             if (*linkedSpell->SpellName[i] && strcmp(linkedSpell->SpellName[i], buffer) == 0)
                             {
@@ -2094,7 +2095,7 @@ bool ChatHandler::CheckEscapeSequences(const char* message)
                             ItemLocale const* il = sObjectMgr.GetItemLocale(linkedItem->ItemId);
 
                             bool foundName = false;
-                            for (uint8 i = LOCALE_koKR; i < MAX_LOCALE; ++i)
+                            for (uint8 i = LOCALE_koKR; i < MAX_DBC_LOCALE; ++i)
                             {
                                 int8 dbIndex = sObjectMgr.GetStorageLocaleIndexFor(LocaleConstant(i));
                                 if (dbIndex == -1 || il == nullptr || (size_t)dbIndex >= il->Name.size())

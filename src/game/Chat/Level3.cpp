@@ -2475,7 +2475,7 @@ bool ChatHandler::HandleLookupItemSetCommand(char* args)
             if (!Utf8FitTo(name, wnamepart))
             {
                 loc = 0;
-                for (; loc < MAX_LOCALE; ++loc)
+                for (; loc < MAX_DBC_LOCALE; ++loc)
                 {
                     if (loc == GetSessionDbcLocale())
                         continue;
@@ -2489,7 +2489,7 @@ bool ChatHandler::HandleLookupItemSetCommand(char* args)
                 }
             }
 
-            if (loc < MAX_LOCALE)
+            if (loc < MAX_DBC_LOCALE)
             {
                 // send item set in "id - [namedlink locale]" format
                 if (m_session)
@@ -2538,7 +2538,7 @@ bool ChatHandler::HandleLookupSkillCommand(char* args)
             if (!Utf8FitTo(name, wnamepart))
             {
                 loc = 0;
-                for (; loc < MAX_LOCALE; ++loc)
+                for (; loc < MAX_DBC_LOCALE; ++loc)
                 {
                     if (loc == GetSessionDbcLocale())
                         continue;
@@ -2552,7 +2552,7 @@ bool ChatHandler::HandleLookupSkillCommand(char* args)
                 }
             }
 
-            if (loc < MAX_LOCALE)
+            if (loc < MAX_DBC_LOCALE)
             {
                 char valStr[50] = "";
                 char const* knownStr = "";
@@ -2663,7 +2663,7 @@ bool ChatHandler::HandleLookupSpellCommand(char* args)
             if (!Utf8FitTo(name, wnamepart))
             {
                 loc = 0;
-                for (; loc < MAX_LOCALE; ++loc)
+                for (; loc < MAX_DBC_LOCALE; ++loc)
                 {
                     if (loc == GetSessionDbcLocale())
                         continue;
@@ -2677,7 +2677,7 @@ bool ChatHandler::HandleLookupSpellCommand(char* args)
                 }
             }
 
-            if (loc < MAX_LOCALE)
+            if (loc < MAX_DBC_LOCALE)
             {
                 ShowSpellListHelper(target, spellInfo, LocaleConstant(loc));
                 ++counter;
@@ -2902,7 +2902,7 @@ bool ChatHandler::HandleLookupTaxiNodeCommand(char* args)
             if (!Utf8FitTo(name, wnamepart))
             {
                 loc = 0;
-                for (; loc < MAX_LOCALE; ++loc)
+                for (; loc < MAX_DBC_LOCALE; ++loc)
                 {
                     if (loc == GetSessionDbcLocale())
                         continue;
@@ -2916,7 +2916,7 @@ bool ChatHandler::HandleLookupTaxiNodeCommand(char* args)
                 }
             }
 
-            if (loc < MAX_LOCALE)
+            if (loc < MAX_DBC_LOCALE)
             {
                 // send taxinode in "id - [name] (Map:m X:x Y:y Z:z)" format
                 if (m_session)
@@ -7291,6 +7291,43 @@ bool ChatHandler::HandleModifyParryCommand(char *args)
 {
     return ModifyStatCommandHelper(args, "Parry Chance", SPELL_MOD_PARRY_CHANCE);
 }
+
+bool ChatHandler::HandleNpcSetStandStateCommand(char* args)
+{
+    if (!*args)
+        return false;
+
+    Creature* pCreature = getSelectedCreature();
+    if (!pCreature)
+    {
+        SendSysMessage(LANG_SELECT_CREATURE);
+        SetSentErrorMessage(true);
+        return false;
+    }
+
+    uint32 state = (uint32)atoi(args);
+
+    // 0 - стоит
+    // 1 - сидит на земле (ноги скрещены)
+    // 2 - сидит на стуле (вариант 1)
+    // 3 - сидит на стуле (вариант 2)
+    // 4-7 - другие варианты сидения
+    // 8 - сидит на стуле (основной)
+
+    if (state > 8)
+    {
+        SendSysMessage("Stand state must be between 0 and 8");
+        SetSentErrorMessage(true);
+        return false;
+    }
+
+    pCreature->SetStandState(state);
+    pCreature->SaveToDB();
+
+    PSendSysMessage("Stand state for creature (GUID: %u) set to %u", pCreature->GetGUIDLow(), state);
+    return true;
+}
+
 
 bool ChatHandler::HandleGoNextCommand(char* args)
 {

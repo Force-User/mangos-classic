@@ -16,7 +16,30 @@
 *.so.dbg
 *.bin
 *.gz
-
+# my
+/build
+/run/contrib
+/run/_deps
+/run/dep
+/run/x64
+/run/src/framework
+/run/src/game/game.dir
+/run/src/mangosd/mangosd.dir
+/run/src/modules
+*.obj
+*.tlog
+*.vcxproj
+*.vcxproj.filters
+*.lib
+*.exp
+*.log
+*.pdb
+*.pch
+*.res
+*.slnx
+*.dist
+*.recipe
+*.ilk
 #
 # Top-level generic files
 #
