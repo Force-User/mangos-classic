@@ -7292,6 +7292,43 @@ bool ChatHandler::HandleModifyParryCommand(char *args)
     return ModifyStatCommandHelper(args, "Parry Chance", SPELL_MOD_PARRY_CHANCE);
 }
 
+bool ChatHandler::HandleNpcSetStandStateCommand(char* args)
+{
+    if (!*args)
+        return false;
+
+    Creature* pCreature = getSelectedCreature();
+    if (!pCreature)
+    {
+        SendSysMessage(LANG_SELECT_CREATURE);
+        SetSentErrorMessage(true);
+        return false;
+    }
+
+    uint32 state = (uint32)atoi(args);
+
+    // 0 - стоит
+    // 1 - сидит на земле (ноги скрещены)
+    // 2 - сидит на стуле (вариант 1)
+    // 3 - сидит на стуле (вариант 2)
+    // 4-7 - другие варианты сидения
+    // 8 - сидит на стуле (основной)
+
+    if (state > 8)
+    {
+        SendSysMessage("Stand state must be between 0 and 8");
+        SetSentErrorMessage(true);
+        return false;
+    }
+
+    pCreature->SetStandState(state);
+    pCreature->SaveToDB();
+
+    PSendSysMessage("Stand state for creature (GUID: %u) set to %u", pCreature->GetGUIDLow(), state);
+    return true;
+}
+
+
 bool ChatHandler::HandleGoNextCommand(char* args)
 {
     Player* player = m_session->GetPlayer();

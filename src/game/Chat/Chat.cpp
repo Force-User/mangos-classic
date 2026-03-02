@@ -541,6 +541,7 @@ ChatCommand* ChatHandler::getCommandTable()
         { "threat",         SEC_ADMINISTRATOR,  false, &ChatHandler::HandleNpcThreatCommand,           "", nullptr },
         { "move",           SEC_GAMEMASTER,     false, &ChatHandler::HandleNpcMoveCommand,             "", nullptr },
         { "playemote",      SEC_ADMINISTRATOR,  false, &ChatHandler::HandleNpcPlayEmoteCommand,        "", nullptr },
+        { "setstandstate",  SEC_GAMEMASTER,     false, &ChatHandler::HandleNpcSetStandStateCommand,     "Syntax: .npc setstandstate [#state]\n\nSet stand state (0-8) for selected creature. 0=stand, 1=sit ground, 2-8=sit chair", nullptr                 },
         { "setmodel",       SEC_GAMEMASTER,     false, &ChatHandler::HandleNpcSetModelCommand,         "", nullptr },
         { "setmovetype",    SEC_GAMEMASTER,     false, &ChatHandler::HandleNpcSetMoveTypeCommand,      "", nullptr },
         { "spawndist",      SEC_GAMEMASTER,     false, &ChatHandler::HandleNpcSpawnDistCommand,        "", nullptr },

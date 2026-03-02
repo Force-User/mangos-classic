@@ -1,0 +1,6 @@
+#ifndef __REVISION_H__
+#define __REVISION_H__
+ #define REVISION_ID "47ee56766340e38039ba67b25b04c11533631ad4"
+ #define REVISION_DATE "2026-02-28T00:37:40+03:00"
+ #define VERSION "0.18"
+#endif // __REVISION_H__
